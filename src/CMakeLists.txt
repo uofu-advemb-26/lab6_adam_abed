@@ -36,3 +36,44 @@ find_program(PICOTOOL picotool)
 
 add_custom_target(flash ${PICOTOOL} load -f $<TARGET_FILE:hello_freertos> DEPENDS hello_freertos)
 add_custom_target(openocd_flash ${OPENOCD} -s ${OPENOCD_PATH} -f interface/cmsis-dap.cfg -f target/rp2040.cfg -c 'adapter speed 5000' -c program "$<TARGET_FILE:hello_freertos>" verify reset exit' DEPENDS hello_freertos)
+
+
+
+# Lab 6 - Activity 0: Priority Inversion
+add_executable(priority_inversion
+    priority_inversion.c
+)
+
+pico_set_program_name(priority_inversion "priority_inversion")
+pico_set_program_version(priority_inversion "0.1")
+
+pico_enable_stdio_uart(priority_inversion 0)
+pico_enable_stdio_usb(priority_inversion 1)
+
+target_link_libraries(priority_inversion PRIVATE
+    pico_stdlib
+    FreeRTOS-Kernel-Heap4
+)
+
+pico_add_extra_outputs(priority_inversion)
+
+
+
+# Lab 6 - Activity 2: FreeRTOS Task Scheduling
+
+add_executable(activity2
+    activity2.c
+)
+
+pico_set_program_name(activity2 "activity2")
+pico_set_program_version(activity2 "0.1")
+
+pico_enable_stdio_uart(activity2 0)
+pico_enable_stdio_usb(activity2 1)
+
+target_link_libraries(activity2 PRIVATE
+    pico_stdlib
+    FreeRTOS-Kernel-Heap4
+)
+
+pico_add_extra_outputs(activity2)
